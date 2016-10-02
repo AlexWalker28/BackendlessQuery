@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 String userFloorCount = floorCount.getText().toString();
                 String userRoomsCount = roomsCount.getText().toString();
 
-                String streetArg = "street LIKE \'%\" + userStreet + \"%\'";
+                /*String streetArg = "street LIKE \'%\" + userStreet + \"%\'";
                 String apartmentTypeArgOR = "OR apartmentType LIKE \'%\" + userApartmentType + \"%\'";
                 String apartmentTypeArg = "apartmentType LIKE \'%\" + userApartmentType + \"%\'";
                 String priceArgOR = "OR price = \" + userPrice + \"";
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 String roomsCountArg = "roomsCount = \" + userRoomsCount";
                 StringBuilder wc = null;
                 String op = "\'%\" ";
-                String cl = "\"%\'";
+                String cl = "\"%\'";*/
 
                 /*if (userStreet.equals("")) {
                 } else wc.append(streetArg);
@@ -88,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void handleResponse(final BackendlessCollection<Sorting> sortingBackendlessCollection) {
 
-                        int size = sortingBackendlessCollection.getData().size();
+                        listView.setAdapter(new BackendlessCollectionAdapter(MainActivity.this, sortingBackendlessCollection));
+
+                        /*int size = sortingBackendlessCollection.getData().size();
 
                         String[] array = new String[size];
                         for (int j = 0; j < size; j++) {
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             resultsTextView.append(content.getStreet() + " " + content.getApartmentType() + " " + content.getPrice() + " " + content.getFloorCount() + " " + content.getRoomsCount() + "\n");
 
 
-                        }
+                        }*/
                     }
 
                     @Override

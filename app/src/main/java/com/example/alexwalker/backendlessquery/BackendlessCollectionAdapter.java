@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.backendless.BackendlessCollection;
@@ -12,7 +12,7 @@ import com.backendless.BackendlessCollection;
 /**
  * Created by AlexWalker on 02.10.2016.
  */
-public class BackendlessCollectionAdapter implements ListAdapter {
+public class BackendlessCollectionAdapter extends BaseAdapter {
     private BackendlessCollection <Sorting> backendlessCollection;
     private LayoutInflater layoutInflater;
 
@@ -21,14 +21,15 @@ public class BackendlessCollectionAdapter implements ListAdapter {
         layoutInflater = LayoutInflater.from(context);
     }
 
-
+    @Override
     public int getCount(){
         return backendlessCollection.getData().size();
     }
-
+    @Override
     public Object getItem(int position){
         return backendlessCollection.getData().get(position);
     }
+    @Override
     public long getItemId(int position){
         return position;
     }
@@ -43,17 +44,18 @@ public class BackendlessCollectionAdapter implements ListAdapter {
             holder.priceView = (TextView)convertView.findViewById(R.id.price);
             holder.floorCountView = (TextView)convertView.findViewById(R.id.floorCount);
             holder.roomsCountView = (TextView)convertView.findViewById(R.id.roomsCount);
+            convertView.setTag(holder);
 
         }else {
             holder = (ViewHolder)convertView.getTag();
         }
-        Sorting content = null;
 
-        holder.streetView.setText(content.getStreet());
-        holder.apartmentTypeView.setText(content.getApartmentType());
-        holder.priceView.setText(content.getPrice());
-        holder.floorCountView.setText(content.getFloorCount());
-        holder.roomsCountView.setText(content.getRoomsCount());
+
+        holder.streetView.setText("address: " + backendlessCollection.getData().get(position).getStreet());
+        holder.apartmentTypeView.setText("type: " + backendlessCollection.getData().get(position).getApartmentType());
+        holder.priceView.setText("price: " + backendlessCollection.getData().get(position).getPrice());
+        holder.floorCountView.setText("floor: " + backendlessCollection.getData().get(position).getFloorCount());
+        holder.roomsCountView.setText("rooms: " + backendlessCollection.getData().get(position).getRoomsCount());
         return convertView;
     }
 
