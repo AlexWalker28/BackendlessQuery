@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,9 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ListView listView;
+    private ArrayAdapter arrayAdapter;
 
 
     @Override
@@ -34,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         final EditText roomsCount = (EditText) findViewById(R.id.editText5);
         final Button showResultsButton = (Button) findViewById(R.id.button);
         final Button saveButton = (Button) findViewById(R.id.saveButton);
-        final Button clearButton = (Button) findViewById(R.id.clearButton);
+        final Button customButton = (Button) findViewById(R.id.customButton);
         final TextView resultsTextView = (TextView) findViewById(R.id.resultsTextView);
+        listView = (ListView) findViewById(R.id.listView2);
 
 
         showResultsButton.setOnClickListener(new View.OnClickListener() {
@@ -48,22 +54,31 @@ public class MainActivity extends AppCompatActivity {
                 String userFloorCount = floorCount.getText().toString();
                 String userRoomsCount = roomsCount.getText().toString();
 
-                /*String streetArg = "street LIKE";
-                String apartmentTypeArg = "apartmentType LIKE";
-                String priceArg = "price <=";
-                String floorCountArg = "floorCount = ";
-                String roomsCountArg = "roomsCount = ";
-                String wc;
+                String streetArg = "street LIKE \'%\" + userStreet + \"%\'";
+                String apartmentTypeArgOR = "OR apartmentType LIKE \'%\" + userApartmentType + \"%\'";
+                String apartmentTypeArg = "apartmentType LIKE \'%\" + userApartmentType + \"%\'";
+                String priceArgOR = "OR price = \" + userPrice + \"";
+                String priceArg = "price = \" + userPrice + \"";
+                String floorCountArgOR = "OR floorCount = \" + userFloorCount + \"";
+                String floorCountArg = "floorCount = \" + userFloorCount + \"";
+                String roomsCountArgOR = "OR roomsCount = \" + userRoomsCount";
+                String roomsCountArg = "roomsCount = \" + userRoomsCount";
+                StringBuilder wc = null;
                 String op = "\'%\" ";
                 String cl = "\"%\'";
 
-                if (userStreet.equals("")) {
-                } else wc = "\"" + streetArg + op + userStreet + cl + "\"";
+                /*if (userStreet.equals("")) {
+                } else wc.append(streetArg);
                 if (userApartmentType.equals("")) {
-                } else  wc = "\"" + op + userStreet + cl + apartmentTypeArg + "\"";*/
+                } else wc.append(apartmentTypeArg);
+                if (userPrice.equals("")) {
+                } else wc.append(priceArg);
+                if (userFloorCount.equals("")) {
+                } else wc.append(floorCountArg);
+                if(userRoomsCount.equals("")){}else wc.append(roomsCountArg);*/
 
 
-                String whereClause = "street LIKE '%" + userStreet + "%' OR apartmentType LIKE '%" + userApartmentType + "%' OR price <= " + userPrice + " OR floorCount = " + userFloorCount + " OR roomsCount = " + userRoomsCount;
+                String whereClause = /*wc.toString();*/ "street LIKE '%" + userStreet + "%' OR apartmentType LIKE '%" + userApartmentType + "%' OR price = " + userPrice + " OR floorCount = " + userFloorCount + " OR roomsCount = " + userRoomsCount;
                 resultsTextView.setText(whereClause + "\n");
                 BackendlessDataQuery dataQuery = new BackendlessDataQuery();
                 dataQuery.setWhereClause(whereClause);
@@ -74,13 +89,23 @@ public class MainActivity extends AppCompatActivity {
                     public void handleResponse(final BackendlessCollection<Sorting> sortingBackendlessCollection) {
 
                         int size = sortingBackendlessCollection.getData().size();
+
+                        String[] array = new String[size];
+                        for (int j = 0; j < size; j++) {
+                            Sorting content = sortingBackendlessCollection.getData().get(j);
+                            array[j] = content.getStreet() + " " + content.getRoomsCount() + " " + content.getApartmentType() + " " +
+                                    content.getFloorCount() + " " + content.getPrice();
+                        }
+                        arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, array);
+                        listView.setAdapter(arrayAdapter);
+
+
                         for (int i = 0; i < size; i++) {
                             Sorting content = sortingBackendlessCollection.getData().get(i);
                             resultsTextView.append(content.getStreet() + " " + content.getApartmentType() + " " + content.getPrice() + " " + content.getFloorCount() + " " + content.getRoomsCount() + "\n");
 
+
                         }
-
-
                     }
 
                     @Override
@@ -109,10 +134,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        customButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resultsTextView.setText(" ");
+                Intent intent = new Intent(MainActivity.this, CustomAdapterActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <TextView
+        android:id="@+id/street"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/apartmentType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/street"
+        android:layout_marginTop="5dip"
+        android:textColor="#343434"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/apartmentType"
+        android:layout_alignBottom="@+id/apartmentType"
+        android:layout_alignParentRight="true"
+        android:textColor="#343434"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/floorCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/price"
+        android:layout_marginTop="5dip"
+        android:textColor="#343434"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/roomsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/floorCount"
+        android:layout_marginTop="5dip"
+        android:textColor="#343434"
+        android:textSize="12sp" />
+</RelativeLayout>
